@@ -129,15 +129,14 @@ def call_claude_with_rag(messages: list, user_query: str) -> str:
     clients = get_bedrock_clients()
 
     # Retrieve relevant courses from Knowledge Base
-    with st.spinner("🔍 Searching knowledge base..."):
-        retrieval_results = search_courses_rag(user_query, top_k=15)
+    retrieval_results = search_courses_rag(user_query, top_k=15)
 
     # Format context
     course_context = format_course_context(retrieval_results)
 
     # Show debug info
     if retrieval_results:
-        st.caption(f"🔍 Found {len(retrieval_results)} relevant documents")
+        st.caption(f"✓ Found {len(retrieval_results)} relevant documents")
 
     # Build system prompt
     system_prompt = f"""You are a helpful course advisor for California community college students using the California Virtual Campus (CVC).
@@ -385,7 +384,8 @@ if prompt := st.chat_input("Ask me about courses using natural language..."):
 
     # Generate response with Claude + RAG
     with st.chat_message("assistant"):
-        response = call_claude_with_rag(st.session_state.messages, prompt)
+        with st.spinner("🔍 Searching knowledge base..."):
+            response = call_claude_with_rag(st.session_state.messages, prompt)
         st.markdown(response)
 
         st.session_state.messages.append({"role": "assistant", "content": response})

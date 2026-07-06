@@ -22,6 +22,7 @@ function Chatbot() {
   const [language, setLanguage] = useState('en');
   const [showAbout, setShowAbout] = useState(false);
   const [showSources, setShowSources] = useState(false);
+  const [enrollableCourses, setEnrollableCourses] = useState(new Set());
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -48,7 +49,7 @@ function Chatbot() {
         context: { language: language }
       });
 
-      const { response: botResponse, suggestions: newSuggestions, courses, sources } = response.data;
+      const { response: botResponse, suggestions: newSuggestions, courses, sources, enrollable_course_codes } = response.data;
 
       // Add assistant message
       setMessages([...newMessages, {
@@ -57,6 +58,11 @@ function Chatbot() {
         courses: courses,
         sources: sources
       }]);
+
+      // Update enrollable courses if user expressed interest
+      if (enrollable_course_codes && enrollable_course_codes.length > 0) {
+        setEnrollableCourses(prev => new Set([...prev, ...enrollable_course_codes]));
+      }
 
       // Update suggestions if provided
       if (newSuggestions && newSuggestions.length > 0) {
@@ -324,12 +330,14 @@ function Chatbot() {
                               <span key={geIdx} className="ge-badge">{ge}</span>
                             ))}
                           </div>
-                          <button
-                            className="enroll-button"
-                            onClick={() => handleEnroll(course)}
-                          >
-                            📝 Enroll
-                          </button>
+                          {enrollableCourses.has(course.course_code) && (
+                            <button
+                              className="enroll-button"
+                              onClick={() => handleEnroll(course)}
+                            >
+                              📝 Enroll
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))}

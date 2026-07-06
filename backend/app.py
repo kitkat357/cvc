@@ -163,6 +163,7 @@ class ChatResponse(BaseModel):
     response: str
     suggestions: Optional[List[str]] = None
     courses: Optional[List[Dict]] = None
+    enrollable_course_codes: Optional[List[str]] = None
 
 
 def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
@@ -226,7 +227,7 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
             return ChatResponse(
                 response=response,
                 courses=matching_courses,
-                suggestions=["Tell me more about ENGL 101", "I need a different area", "Show me all areas"]
+                suggestions=["I want to enroll in one of these", "I need a different area", "Show me all areas"]
             )
         else:
             return ChatResponse(
@@ -240,7 +241,7 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
         return ChatResponse(
             response="Here are the math courses I found:",
             courses=math_courses,
-            suggestions=["What GE does this satisfy?", "Show me other areas", "I need science courses"]
+            suggestions=["I want to enroll in MATH 104", "Show me other areas", "I need science courses"]
         )
 
     if any(term in user_message for term in ["english", "writing", "composition"]):
@@ -248,7 +249,7 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
         return ChatResponse(
             response="Here are the English courses I found:",
             courses=english_courses,
-            suggestions=["What GE does this satisfy?", "Show me communication courses", "I need humanities"]
+            suggestions=["I want to enroll in ENGL 101", "Show me communication courses", "I need humanities"]
         )
 
     if any(term in user_message for term in ["social", "sociology", "psychology"]):
@@ -256,7 +257,7 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
         return ChatResponse(
             response="Here are social science courses I found:",
             courses=social_courses,
-            suggestions=["What GE area is this?", "Show me arts courses", "I need science courses"]
+            suggestions=["I want to enroll", "Show me arts courses", "I need science courses"]
         )
 
     if any(term in user_message for term in ["science", "biology", "chemistry", "lab"]):
@@ -264,8 +265,53 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
         return ChatResponse(
             response="Here are science courses with lab components:",
             courses=science_courses,
-            suggestions=["What GE does this satisfy?", "Show me humanities", "I need math courses"]
+            suggestions=["I want to enroll", "Show me humanities", "I need math courses"]
         )
+
+    # Check if user expresses interest in enrolling
+    # Only trigger if they're NOT asking for help initially
+    enrollment_keywords = ["enroll", "sign up", "register", "take this", "sounds good", "that works",
+                           "perfect", "i'll take", "looks good", "interested in enrolling",
+                           "want to take", "want that", "i'd like", "that one"]
+
+    # Exclude phrases that indicate they're asking for help, not enrolling
+    help_phrases = ["i want some help", "i want help", "want some help", "can you help"]
+    is_asking_for_help = any(phrase in user_message for phrase in help_phrases)
+
+    if len(messages) > 2 and any(keyword in user_message for keyword in enrollment_keywords) and not is_asking_for_help:
+        enrollable_codes = []
+
+        # Try to identify specific course mentioned in user message
+        for course in MOCK_COURSES:
+            course_code_clean = course["course_code"].replace(" ", "").lower()
+            course_code_spaced = course["course_code"].lower()
+            course_title_lower = course["title"].lower()
+
+            if (course_code_clean in user_message.replace(" ", "") or
+                course_code_spaced in user_message or
+                course_title_lower in user_message):
+                enrollable_codes.append(course["course_code"])
+
+        # If specific course identified, enable enrollment for that course
+        if enrollable_codes:
+            return ChatResponse(
+                response=f"Great! I've enabled the enrollment button for **{', '.join(enrollable_codes)}**. "
+                        f"Click the **📝 Enroll** button next to the course to proceed.",
+                enrollable_course_codes=enrollable_codes,
+                suggestions=["Show me more courses", "What other GE areas do I need?", "Tell me about transfer requirements"]
+            )
+        # If no specific course mentioned, enable all recently shown courses
+        else:
+            # Find all courses that were shown in the last few messages
+            # We'll enable enrollment for all courses currently visible
+            all_enrollable = [c["course_code"] for c in MOCK_COURSES]
+
+            return ChatResponse(
+                response=f"Great! I've enabled the enrollment buttons for all the courses shown above. "
+                        f"Click the **📝 Enroll** button next to any course you'd like to take.",
+                enrollable_course_codes=all_enrollable,
+                suggestions=["Show me more courses", "What other areas do I need?", "Tell me about prerequisites"]
+            )
 
     # Check if user mentions they attend Cal Poly
     if "cal poly" in user_message and len(messages) == 1:

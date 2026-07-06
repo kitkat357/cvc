@@ -1,18 +1,26 @@
 # Project Pause/Resume Guide
 
-## ✅ Project Status: PAUSED
+## ✅ Project Status: PAUSED (Custom RAG Pipeline Ready)
 
-**Date Paused**: 2026-07-03  
-**Reason**: Stop idle charges (~$90-180/month)  
-**Current Cost**: ~$0.01/month (essentially free)
+**Date Last Updated**: 2026-07-06  
+**Current Cost**: ~$0.01/month (S3 storage only)  
+**Architecture**: Custom RAG Pipeline with Traditional OpenSearch (when active)  
+**Status**: All AWS compute resources deleted, data preserved in S3
 
 ---
 
-## 🛑 What Was Deleted
+## 🔄 Architecture Migration (2026-07-06)
 
-- ❌ OpenSearch Serverless collection `j409jdcw8ff01uuoo5od` (was $90-180/month)
-- ❌ Bedrock Knowledge Base `NVIJPDFIJU` (no cost when idle anyway)
-- ❌ Streamlit app process
+### Old Setup (Deleted)
+- ❌ OpenSearch Serverless collection (was $90-180/month)
+- ❌ Bedrock Knowledge Base (no longer needed)
+
+### New Setup (Custom RAG Pipeline - Cost-Optimized!)
+- ✅ **Custom RAG Implementation**: Direct Bedrock API calls, no managed Knowledge Base
+- ✅ **Traditional OpenSearch**: t3.small.search instances (~$20-40/month when active)
+- ✅ **1,981 Documents Processed**: All courses and transfers embedded and indexed
+- ✅ **Full Control**: 100% Python code, no black-box services
+- 💰 **60-75% Cost Savings** vs Serverless OpenSearch
 
 ---
 
@@ -23,26 +31,26 @@
 - ✅ **Git Repository**: https://github.com/kitkat357/cvc.git (all code backed up)
 - ✅ **Local Files**: All source code in `/Users/rishikajain/claude/cvc-rag-chatbot/`
 
-**Nothing is lost!** All your work can be restored in 20-30 minutes.
+**Nothing is lost!** All your data is preserved in S3.
 
 ---
 
-## 🚀 How to Resume the Project
+## 🚀 How to Resume with Traditional OpenSearch (Cost-Optimized)
 
-### Quick Resume (20-30 minutes)
+### Resume Steps (30-40 minutes - one-time setup)
 
 ```bash
 cd /Users/rishikajain/claude/cvc-rag-chatbot
 source .venv/bin/activate
 
-# Step 1: Recreate OpenSearch collection (~10 min)
-python src/setup_opensearch.py
+# Step 1: Create traditional OpenSearch domain (~15 min)
+python src/setup_opensearch_traditional.py
 
 # Step 2: Create OpenSearch index (~1 min)
-python src/create_opensearch_index.py
+python src/create_opensearch_index_traditional.py
 
-# Step 3: Recreate Knowledge Base (~5 min)
-python src/setup_knowledge_base.py
+# Step 3: Create Knowledge Base (~5 min)
+python src/setup_knowledge_base_traditional.py
 # Copy the new Knowledge Base ID from output
 
 # Step 4: Update .env file with new KB ID
@@ -52,18 +60,50 @@ python src/setup_knowledge_base.py
 streamlit run src/cvc_chatbot_rag.py --server.port 8502
 ```
 
-**Total time**: 20-30 minutes  
-**Total cost**: $0 (just your time)
+**Total time**: 30-40 minutes (traditional domains take longer to create)  
+**Monthly cost**: ~$20-40/month (60-75% cheaper than Serverless!)
+
+### Quick Start/Stop (After Initial Setup)
+
+Once the domain is created, you can pause/resume quickly:
+
+**To Pause** (stop charges):
+```bash
+# Delete the domain (keeps S3 data)
+aws opensearch delete-domain --domain-name cvc-courses --profile cvc-project --region us-west-2
+```
+
+**To Resume** (from paused state):
+```bash
+# Recreate domain and sync data (~30 min)
+python src/setup_opensearch_traditional.py
+python src/create_opensearch_index_traditional.py
+python src/setup_knowledge_base_traditional.py
+```
 
 ---
 
 ## 💰 Cost Comparison
 
-| State | Monthly Cost | Daily Cost |
-|-------|-------------|------------|
-| **Active** (with OpenSearch) | $90-180 | $3-6 |
-| **Paused** (S3 only) | $0.01 | $0.0003 |
-| **Deleted** (nothing) | $0 | $0 |
+| Architecture | Monthly Cost | Daily Cost | Notes |
+|--------------|-------------|------------|-------|
+| **Traditional OpenSearch** (current) | $20-40 | $0.67-1.33 | t3.small.search instance |
+| **OpenSearch Serverless** (old) | $90-180 | $3-6 | Pay per OCU-hour |
+| **Paused** (S3 only) | $0.01 | $0.0003 | Just storage |
+| **Deleted** (nothing) | $0 | $0 | Everything removed |
+
+### Cost Breakdown (Traditional)
+
+- **OpenSearch Domain**: $20-40/month
+  - t3.small.search instance: ~$0.036/hour × 730 hours = ~$26/month
+  - 10GB gp3 storage: ~$1/month
+- **S3 Storage**: <$0.01/month
+- **Bedrock Usage**: Pay per use
+  - Claude Haiku: ~$0.25/1M input tokens
+  - Titan Embeddings: ~$0.10/1M tokens
+
+**Total**: ~$20-40/month vs $90-180/month with Serverless  
+**Savings**: ~$50-140/month (60-75% reduction!)
 
 ---
 

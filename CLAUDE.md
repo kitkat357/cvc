@@ -7,47 +7,194 @@
 **Primary Users**: California community college students seeking transferable courses
 **Scale**: Currently 3 colleges (mock data), target 116 colleges with 100,000+ courses serving 2.2M students
 
-## Architecture
+**Last Updated**: 2026-07-06
+**Current Status**: 
+- ✅ Mock Chatbot (React + FastAPI) - Ready for demos
+- ✅ Custom RAG Pipeline - Built and tested, currently paused
+- ⏸️ AWS Services - All paused to save costs (~$0.01/month)
 
-### Technology Stack
+## Two Implementation Approaches
 
+### 1. Mock Chatbot (React + FastAPI) - **RECOMMENDED FOR DEMOS**
+
+**Architecture:**
+```
+React Frontend (Port 5173)
+    ↓ HTTP REST API
+FastAPI Backend (Port 8000)
+    ↓
+Hardcoded course data + conversation logic
+```
+
+**Technology Stack:**
+- **Frontend**: React 18 with Vite
+- **Backend**: FastAPI (Python)
+- **Data**: Hardcoded mock courses (10 samples)
+- **Cost**: $0 (no AWS required)
+- **Setup Time**: 5 minutes
+
+**Use Cases:**
+- Demos to stakeholders
+- UI/UX prototyping
+- Class presentations
+- Testing conversation flows
+
+**Files:**
+- `backend/app.py` - FastAPI server with GE conversation logic
+- `frontend/src/components/Chatbot.jsx` - React chatbot UI
+- `run_chatbot.sh` - Easy startup script
+- `REACT_CHATBOT_README.md` - Full documentation
+
+### 2. Custom RAG Pipeline (OpenSearch + Bedrock) - **FOR PRODUCTION**
+
+**Architecture:**
+```
+Streamlit UI (Port 8502)
+    ↓
+Custom RAG Implementation (src/custom_rag.py)
+    ↓
+Traditional OpenSearch (t3.small.search)
+    ↓
+AWS Bedrock (Titan Embeddings + Claude Haiku)
+```
+
+**Technology Stack:**
 - **Frontend**: Streamlit (Python web framework for ML/AI apps)
+- **RAG Implementation**: Custom Python pipeline (no Bedrock Knowledge Base)
 - **LLM**: Claude Haiku 4.5 via AWS Bedrock (`us.anthropic.claude-haiku-4-5-20251001-v1:0`)
 - **Embeddings**: AWS Bedrock Titan Embeddings G1 (1536-dimension vectors)
-- **Vector Database**: AWS OpenSearch Serverless (vector engine)
-- **RAG Framework**: AWS Bedrock Knowledge Bases (managed RAG pipeline)
+- **Vector Database**: Traditional OpenSearch (t3.small.search instance)
 - **Storage**: AWS S3 (`cvc-rag-course-data` bucket)
 - **Region**: us-west-2 (Oregon)
 - **AWS Profile**: `cvc-project`
+- **Cost**: ~$20-40/month when active (60-75% cheaper than Serverless!)
+- **Setup Time**: 30-40 minutes
 
-### RAG Pipeline
+**Use Cases:**
+- Production deployment
+- Real semantic search across 1,981 documents
+- Scalable to 100,000+ courses
+- Real user queries
+
+### Custom RAG Pipeline (Production Version)
 
 1. **User Query** → Streamlit chat input
-2. **Semantic Embedding** → Bedrock Titan converts query to 1536-dim vector
-3. **Vector Search** → OpenSearch Serverless finds similar course documents
-4. **Context Retrieval** → Top-k relevant courses retrieved (default k=15)
-5. **LLM Generation** → Claude Haiku generates response with retrieved context
+2. **Semantic Embedding** → Direct Bedrock Titan API call (1536-dim vector)
+3. **Vector Search** → OpenSearch KNN search (custom implementation)
+4. **Context Retrieval** → Top-k relevant courses retrieved (default k=10)
+5. **LLM Generation** → Direct Claude Haiku API call with retrieved context
 6. **Response Display** → Formatted in Streamlit chat interface
+
+**Key Advantage**: Full control over every step, no black-box Knowledge Base
 
 ### Data Flow
 
+**Custom RAG Pipeline (Current Implementation):**
 ```
 S3 Bucket (cvc-rag-course-data)
-├── catalogs/{college}/{year}/courses.json
-└── transfers/{from}-to-{to}/{year}/transfers.json
+├── 1,981 documents preserved
+└── courses + transfers
         ↓
-Bedrock Knowledge Base (auto-sync)
+Local Processing (src/upload_to_opensearch.py)
         ↓
-OpenSearch Serverless (vector index)
+Bedrock Titan Embeddings (API call)
         ↓
-Bedrock Agent Runtime (retrieve API)
+Traditional OpenSearch t3.small.search
         ↓
-Claude Haiku (response generation)
+Custom RAG retrieval (src/custom_rag.py)
+        ↓
+Claude Haiku (direct API call)
+```
+
+**Mock Chatbot (For Demos):**
+```
+React UI
+    ↓
+FastAPI Backend
+    ↓
+Hardcoded conversation logic
+    ↓
+Mock course data (10 samples)
 ```
 
 ## Project Structure
 
-### Core Modules
+### Mock Chatbot Modules (React + FastAPI)
+
+#### `backend/app.py`
+- FastAPI server with CORS enabled for React frontend
+- Conversational logic for GE education and course recommendations
+- **Key Functions**:
+  - `get_bot_response()`: Main conversation handler with pattern matching
+  - `chat()`: POST /api/chat endpoint for message handling
+  - `health()`: GET /api/health for status checks
+- **Data**: 
+  - `GE_INFO`: IGETC, Cal-GETC, and Cal-Breadth definitions
+  - `MOCK_COURSES`: 10 sample courses across 3 colleges
+- **Features**: Explains GE systems, interviews about areas, shows relevant courses
+
+#### `frontend/src/components/Chatbot.jsx`
+- React component for chat interface
+- **Key Features**:
+  - Message history with user/assistant distinction
+  - Course cards with GE area badges
+  - Clickable suggestion buttons
+  - Typing indicator animation
+  - Auto-scroll to latest message
+- **API Integration**: Axios for HTTP requests to FastAPI backend
+- **State Management**: useState hooks for messages, input, loading, suggestions
+
+#### `frontend/src/components/Chatbot.css`
+- CVC-branded styling (blue #003366, gold #FDB913)
+- Responsive course cards
+- Smooth animations and transitions
+- Mobile-friendly design
+
+#### `run_chatbot.sh`
+- Convenience script to start both backend and frontend
+- Activates virtual environment
+- Checks backend health before starting frontend
+- Handles graceful shutdown
+
+### Custom RAG Pipeline Modules (Production)
+
+#### `src/custom_rag.py`
+- Custom RAG implementation without Bedrock Knowledge Base
+- **Class**: `CustomRAG`
+- **Key Methods**:
+  - `embed_text()`: Call Bedrock Titan for embeddings
+  - `search_similar()`: OpenSearch KNN vector search
+  - `generate_response()`: Call Claude Haiku with context
+  - `query()`: Complete RAG pipeline (retrieve + generate)
+- **Advantages**: Full control, 60-75% cost savings, debuggable
+
+#### `src/upload_to_opensearch.py`
+- Process and upload course data with embeddings to OpenSearch
+- **Class**: `DataUploader`
+- **Key Methods**:
+  - `process_course_catalog()`: Parse course JSON files
+  - `process_transfer_data()`: Parse transfer agreement files
+  - `upload_documents()`: Bulk upload with embeddings (50 docs/batch)
+- **Result**: 1,981 documents indexed with 1536-dim vectors
+
+#### `src/cvc_chatbot_custom_rag.py`
+- Streamlit UI for custom RAG pipeline
+- Uses `CustomRAG` class instead of Bedrock Knowledge Base API
+- Shows source documents with relevance scores
+- CVC branding consistent with mock version
+
+#### `src/setup_opensearch_traditional.py`
+- Creates traditional OpenSearch domain (t3.small.search)
+- Configures access policies for Bedrock and local access
+- ~15 minute provisioning time
+- Cost: ~$26/month (vs $90-180 for Serverless)
+
+#### `src/create_opensearch_index_traditional.py`
+- Creates vector index with HNSW algorithm
+- 1536-dimension vectors (matches Titan embeddings)
+- Faiss engine for efficient KNN search
+
+### Legacy/Reference Modules
 
 #### `src/config.py`
 - Centralized configuration management
@@ -139,6 +286,57 @@ Claude Haiku (response generation)
 
 **Total**: 91 courses, 1,892 transfer mappings
 
+---
+
+## Quick Start
+
+### For Demos (Mock Chatbot)
+
+**Fastest way to demo the chatbot (NO AWS required):**
+
+```bash
+cd /Users/rishikajain/claude/cvc-rag-chatbot
+./run_chatbot.sh
+```
+
+Then open **http://localhost:5173** and try:
+> "I'm a student attending Cal Poly and I want some help getting some GEs over the summer"
+
+**Manual start:**
+```bash
+# Terminal 1 - Backend
+source .venv/bin/activate
+cd backend && python app.py
+
+# Terminal 2 - Frontend  
+cd frontend && npm run dev
+```
+
+### For Production (Custom RAG Pipeline)
+
+**Resume the full RAG pipeline with 1,981 courses:**
+
+```bash
+cd /Users/rishikajain/claude/cvc-rag-chatbot
+source .venv/bin/activate
+
+# 1. Create OpenSearch domain (~15 min)
+python src/setup_opensearch_traditional.py
+
+# 2. Create vector index (~1 min)
+python src/create_opensearch_index_traditional.py
+
+# 3. Upload data with embeddings (~10 min)
+python src/upload_to_opensearch.py
+
+# 4. Start chatbot
+streamlit run src/cvc_chatbot_custom_rag.py --server.port 8502
+```
+
+**Cost**: ~$20-40/month when active
+
+---
+
 ## Development Workflow
 
 ### Setup New Environment
@@ -157,20 +355,32 @@ python --version  # Should be 3.11+
 pip install -r requirements.txt
 ```
 
-### Running the Application
+### Running the Applications
 
+**Mock Chatbot (React + FastAPI):**
+```bash
+# Quick start
+./run_chatbot.sh
+
+# Or manually:
+# Terminal 1 - Backend
+source .venv/bin/activate
+cd backend && python app.py
+
+# Terminal 2 - Frontend
+cd frontend && npm run dev
+```
+
+**Custom RAG Chatbot (Streamlit + OpenSearch):**
 ```bash
 # Activate venv
 source .venv/bin/activate
 
-# Run RAG chatbot
-streamlit run src/cvc_chatbot_rag.py
+# Run custom RAG chatbot (recommended)
+streamlit run src/cvc_chatbot_custom_rag.py --server.port 8502
 
-# Or run on specific port
-streamlit run src/cvc_chatbot_rag.py --server.port 8502
-
-# Compare with old version
-streamlit run ../cvc_chatbot_multicollege.py --server.port 8501
+# Or legacy Bedrock KB version (if available)
+streamlit run src/cvc_chatbot_rag.py --server.port 8503
 ```
 
 ### AWS Operations
@@ -359,54 +569,131 @@ The following must be configured manually in AWS Console:
 - Cognito for authentication
 - CloudFormation/Terraform for IaC
 
+## Cost Management (2026-07-06 Update)
+
+### Current Monthly Costs
+
+| Component | Status | Monthly Cost |
+|-----------|--------|--------------|
+| **Mock Chatbot (React + FastAPI)** | ✅ Ready | $0 |
+| **S3 Storage (1,000 files)** | ✅ Active | ~$0.01 |
+| **Traditional OpenSearch** | ⏸️ Paused | $0 |
+| **Bedrock APIs** | ⏸️ Not in use | $0 |
+| **Total Current** | | **~$0.01/month** |
+
+### Cost When Active (Custom RAG)
+
+| Component | Monthly Cost |
+|-----------|--------------|
+| OpenSearch t3.small.search | ~$26 |
+| 10GB gp3 storage | ~$1 |
+| Bedrock Titan Embeddings | ~$0.10 (pay-per-use) |
+| Claude Haiku queries | ~$0.25 (pay-per-use) |
+| S3 storage | <$0.01 |
+| **Total Active** | **~$20-40/month** |
+
+**Comparison**: 60-75% cheaper than OpenSearch Serverless ($90-180/month)
+
+### Cost Optimization Decisions Made
+
+1. ✅ **Switched from Serverless to Traditional OpenSearch**
+   - Savings: ~$50-140/month
+   - Trade-off: 15-minute setup time vs instant scaling
+
+2. ✅ **Built Custom RAG Pipeline (no Bedrock Knowledge Base)**
+   - Savings: No KB charges
+   - Benefit: Full control over pipeline
+
+3. ✅ **Created Mock Chatbot for Demos**
+   - Savings: $20-40/month during non-production phases
+   - Use: Stakeholder demos, prototyping
+
+### Pause/Resume Strategy
+
+**When to Pause** (save $20-40/month):
+```bash
+aws opensearch delete-domain \
+  --domain-name cvc-courses \
+  --profile cvc-project \
+  --region us-west-2
+```
+
+**When to Resume** (30-40 min setup):
+```bash
+python src/setup_opensearch_traditional.py
+python src/create_opensearch_index_traditional.py
+python src/upload_to_opensearch.py
+```
+
+**Data preserved in S3** - nothing is lost when pausing!
+
+---
+
 ## Debugging Tips
 
-### Check AWS Profile
+### Mock Chatbot
 
+**Backend won't start:**
+```bash
+# Check port 8000
+lsof -i :8000
+
+# Test health
+curl http://localhost:8000/api/health
+```
+
+**Frontend errors:**
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Custom RAG Pipeline
+
+**Check AWS Profile:**
 ```bash
 aws configure list --profile cvc-project
 ```
 
-### Test S3 Access
-
+**Test S3 Access:**
 ```bash
 aws s3 ls s3://cvc-rag-course-data --profile cvc-project --region us-west-2
 ```
 
-### Verify Knowledge Base Sync
+**Check Resource Status:**
+```bash
+python src/check_status.py
+```
 
-AWS Console → Bedrock → Knowledge Bases → `cvc-course-catalog` → Data source → Check last sync status
+**OpenSearch Connection:**
+```bash
+# Get domain status
+aws opensearch describe-domain \
+  --domain-name cvc-courses \
+  --profile cvc-project \
+  --region us-west-2
+```
 
 ### Streamlit Logs
 
 Errors appear in terminal where `streamlit run` was executed. Look for:
 - `boto3` client errors (credentials, permissions)
 - `ClientError` from AWS API calls
-- Knowledge Base ID not found errors
-
-### VSCode Debugging
-
-1. Set breakpoints in `src/cvc_chatbot_rag.py`
+- OpenSearch connection errors
+- Embedding API errors
 2. Press F5 (or Run → Start Debugging)
 3. Streamlit app launches in debug mode
 4. Step through code when breakpoint is hit
 
-## Cost Management
+### Cost Optimization Tips (Applied)
 
-### Development Costs (<$10/month)
-
-- S3: <$0.10/month (few MB of JSON)
-- OpenSearch Serverless: ~$0.25/OCU-hour (scales to zero when idle)
-- Bedrock Knowledge Base: ~$0.10/1K queries
-- Claude Haiku: ~$0.25/1M input tokens
-- Titan Embeddings: ~$0.10/1M tokens
-
-### Cost Optimization Tips
-
-1. **Use Claude Haiku** (not Sonnet/Opus) - 10x cheaper
-2. **Limit top_k** - Retrieving 15 docs instead of 50 reduces cost
-3. **OpenSearch Serverless** - Only pay when querying (not idle EC2 instances)
-4. **S3 versioning** - Keep old versions in case of data corruption
+1. ✅ **Use Claude Haiku** (not Sonnet/Opus) - 10x cheaper
+2. ✅ **Traditional OpenSearch** - t3.small.search instead of Serverless (60-75% savings)
+3. ✅ **Custom RAG Pipeline** - No Bedrock Knowledge Base fees
+4. ✅ **Mock Chatbot** - $0 alternative for demos
+5. ✅ **Pause when idle** - Delete OpenSearch domain, keep S3 data
+6. ✅ **Direct API calls** - No managed service overhead
 
 ## Next Phase: Production Deployment
 
@@ -447,15 +734,98 @@ Errors appear in terminal where `streamlit run` was executed. Look for:
 - Embed chat widget via iframe or JavaScript SDK
 - SSO integration with CVC authentication
 
+## Documentation Reference
+
+### Quick Reference
+- **QUICKSTART.md** - Fastest way to get started (read this first!)
+- **REACT_CHATBOT_README.md** - Mock chatbot documentation
+- **CUSTOM_RAG_SUMMARY.md** - Full RAG pipeline details
+- **PAUSE_RESUME.md** - Cost management and pause/resume instructions
+- **CLAUDE.md** - This file (complete project reference)
+
+### By Use Case
+
+**I want to demo the chatbot quickly:**
+→ Read `QUICKSTART.md` and run `./run_chatbot.sh`
+
+**I need to understand the GE conversation flow:**
+→ Check `backend/app.py` and `REACT_CHATBOT_README.md`
+
+**I want to deploy the production RAG version:**
+→ Follow `CUSTOM_RAG_SUMMARY.md`
+
+**I need to pause/resume AWS services:**
+→ See `PAUSE_RESUME.md`
+
+**I want to understand the full architecture:**
+→ You're reading it! (CLAUDE.md)
+
+---
+
+## Current Project Status (2026-07-06)
+
+### ✅ Completed Milestones
+
+1. **Phase 1**: Project initialization and AWS setup ✅
+2. **Phase 2**: Data ingestion (1,981 documents) ✅
+3. **Phase 3**: Custom RAG pipeline implementation ✅
+4. **Phase 4**: Cost optimization (60-75% reduction) ✅
+5. **Phase 5**: React + FastAPI mock chatbot ✅
+
+### 📊 Current State
+
+**Infrastructure:**
+- ✅ S3 bucket with 1,000 files (active)
+- ⏸️ OpenSearch domain (paused/deleted)
+- ⏸️ Bedrock APIs (not in use)
+- ✅ All code and data preserved
+
+**Applications:**
+- ✅ Mock chatbot (React + FastAPI) - Ready for demos
+- ✅ Custom RAG chatbot (Streamlit + OpenSearch) - Code ready, can resume in 30-40 min
+- ⚠️ Legacy KB chatbot (Bedrock Knowledge Base) - Deprecated
+
+**Monthly Cost:** ~$0.01 (essentially free)
+
+### 🎯 Next Steps
+
+**Immediate** (Demo Phase):
+- ✅ Use mock chatbot for stakeholder demos
+- ✅ Collect user feedback on conversation flow
+- ✅ Iterate on GE explanations and course display
+
+**Short-term** (Testing):
+- Resume custom RAG pipeline for quality testing
+- Compare search results: mock vs semantic
+- Benchmark response quality
+- Test with real user queries
+
+**Long-term** (Production):
+- Scale to all 116 CA community colleges
+- Ingest 100,000+ courses
+- Deploy to AWS (Lambda + API Gateway or ECS)
+- Integrate with CVC platform (cvc.edu)
+- Add authentication and analytics
+
+---
+
 ## Contact & Resources
 
 **Project Owner**: Cal Poly DX Hub (Darren Kraker, Riya, Nick)
 **Stakeholder**: Marina Aminy (Executive Director, CVC)
 **AWS Account**: `cvc-project` profile
-**Documentation**: This CLAUDE.md file + README.md
 **Code Repository**: `/Users/rishikajain/claude/cvc-rag-chatbot/`
+**GitHub**: https://github.com/kitkat357/cvc.git
+
+**Architecture Decisions:**
+- ✅ Custom RAG > Bedrock Knowledge Base (cost + control)
+- ✅ Traditional OpenSearch > Serverless (60-75% savings)
+- ✅ Mock chatbot for demos (zero AWS cost)
+- ✅ Direct API calls > Managed services (transparency)
 
 ---
 
-*Last Updated*: 2026-07-02
-*Project Phase*: Phase 1 Complete (Project Initialization), Ready for Phase 2 (AWS Infrastructure Setup)
+*Last Updated*: 2026-07-06  
+*Current Phase*: Demo Phase (Mock chatbot ready, RAG pipeline paused)  
+*Status*: Production-ready code, AWS services paused for cost savings  
+*Achievement*: Two working implementations (mock + production) with 60-75% cost optimization! 🎉

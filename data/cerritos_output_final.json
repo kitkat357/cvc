@@ -1,0 +1,342 @@
+{
+  "catalog_info": {
+    "academic_year": "2019-2025",
+    "institution": "Cerritos College"
+  },
+  "total_courses": 37,
+  "courses": [
+    {
+      "department_code": "MUS",
+      "course_number": "104B",
+      "title": "History of Rock Music",
+      "units": "3.000",
+      "department": "",
+      "description": "History of Rock Music",
+      "enhanced_description": "History of Rock Music"
+    },
+    {
+      "department_code": "HED",
+      "course_number": "110",
+      "title": "Community First Aid and CPR",
+      "units": "3.000",
+      "department": "",
+      "description": "Community First Aid and CPR",
+      "enhanced_description": "Community First Aid and CPR"
+    },
+    {
+      "department_code": "SOC",
+      "course_number": "101",
+      "title": "Intro Sociology-Principles",
+      "units": "3.000",
+      "department": "",
+      "description": "Intro Sociology-Principles",
+      "enhanced_description": "Intro Sociology-Principles"
+    },
+    {
+      "department_code": "CD",
+      "course_number": "110",
+      "title": "Child Development",
+      "units": "3.000",
+      "department": "",
+      "description": "Child Development",
+      "enhanced_description": "Child Development"
+    },
+    {
+      "department_code": "CHIN",
+      "course_number": "101",
+      "title": "Elementary Chinese I",
+      "units": "5.000",
+      "department": "",
+      "description": "Elementary Chinese I",
+      "enhanced_description": "Elementary Chinese I"
+    },
+    {
+      "department_code": "ENGL",
+      "course_number": "100",
+      "title": "Freshman Composition",
+      "units": "4.000",
+      "department": "",
+      "description": "Freshman Composition",
+      "enhanced_description": "Freshman Composition"
+    },
+    {
+      "department_code": "CD",
+      "course_number": "124",
+      "title": "Teaching in a Diverse Society",
+      "units": "3.000",
+      "department": "",
+      "description": "Teaching in a Diverse Society",
+      "enhanced_description": "Teaching in a Diverse Society"
+    },
+    {
+      "department_code": "CDEC",
+      "course_number": "111",
+      "title": "Principles/Practices Ece",
+      "units": "3.000",
+      "department": "",
+      "description": "Principles/Practices Ece",
+      "enhanced_description": "Principles/Practices Ece"
+    },
+    {
+      "department_code": "CHIN",
+      "course_number": "102",
+      "title": "Elementary Chinese II",
+      "units": "5.000",
+      "department": "",
+      "description": "Elementary Chinese II",
+      "enhanced_description": "Elementary Chinese II"
+    },
+    {
+      "department_code": "ENGL",
+      "course_number": "103",
+      "title": "Critical/Argumentative Wrt",
+      "units": "3.000",
+      "department": "",
+      "description": "Critical/Argumentative Wrt",
+      "enhanced_description": "Critical/Argumentative Wrt"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "112",
+      "title": "Elementary Statistics",
+      "units": "4.000",
+      "department": "",
+      "description": "Elementary Statistics",
+      "enhanced_description": "Elementary Statistics"
+    },
+    {
+      "department_code": "CD",
+      "course_number": "139",
+      "title": "Obser-Assess-Posi Guidance",
+      "units": "3.000",
+      "department": "",
+      "description": "Obser-Assess-Posi Guidance",
+      "enhanced_description": "Obser-Assess-Posi Guidance"
+    },
+    {
+      "department_code": "CDEC",
+      "course_number": "112",
+      "title": "Introduction to Curriculum",
+      "units": "3.000",
+      "department": "",
+      "description": "Introduction to Curriculum",
+      "enhanced_description": "Introduction to Curriculum"
+    },
+    {
+      "department_code": "CDEC",
+      "course_number": "113",
+      "title": "Child In Family & Commun",
+      "units": "3.000",
+      "department": "",
+      "description": "Child In Family & Commun",
+      "enhanced_description": "Child In Family & Commun"
+    },
+    {
+      "department_code": "CDEC",
+      "course_number": "161",
+      "title": "Health, Safety, and Nutrition",
+      "units": "3.000",
+      "department": "",
+      "description": "Health, Safety, and Nutrition",
+      "enhanced_description": "Health, Safety, and Nutrition"
+    },
+    {
+      "department_code": "CHIN",
+      "course_number": "201",
+      "title": "Intermediate Chinese I",
+      "units": "5.000",
+      "department": "",
+      "description": "Intermediate Chinese I",
+      "enhanced_description": "Intermediate Chinese I"
+    },
+    {
+      "department_code": "COMM",
+      "course_number": "100",
+      "title": "Intro to Communication Studies",
+      "units": "3.000",
+      "department": "",
+      "description": "Intro to Communication Studies",
+      "enhanced_description": "Intro to Communication Studies"
+    },
+    {
+      "department_code": "KIN",
+      "course_number": "100",
+      "title": "Introduction to Kinesiology",
+      "units": "3.000",
+      "department": "",
+      "description": "Introduction to Kinesiology",
+      "enhanced_description": "Introduction to Kinesiology"
+    },
+    {
+      "department_code": "POL",
+      "course_number": "101",
+      "title": "American Political Institution",
+      "units": "3.000",
+      "department": "",
+      "description": "American Political Institution",
+      "enhanced_description": "American Political Institution"
+    },
+    {
+      "department_code": "A&P",
+      "course_number": "150",
+      "title": "Intro To Human Anatomy",
+      "units": "4.000",
+      "department": "",
+      "description": "Intro To Human Anatomy",
+      "enhanced_description": "Intro To Human Anatomy"
+    },
+    {
+      "department_code": "CDEC",
+      "course_number": "164",
+      "title": "Practicum Field Experience",
+      "units": "3.000",
+      "department": "",
+      "description": "Practicum Field Experience",
+      "enhanced_description": "Practicum Field Experience"
+    },
+    {
+      "department_code": "CHIN",
+      "course_number": "202",
+      "title": "Intermediate Chinese II",
+      "units": "5.000",
+      "department": "",
+      "description": "Intermediate Chinese II",
+      "enhanced_description": "Intermediate Chinese II"
+    },
+    {
+      "department_code": "PEX",
+      "course_number": "189",
+      "title": "Tennis, Beginning",
+      "units": "1.000",
+      "department": "",
+      "description": "Tennis, Beginning",
+      "enhanced_description": "Tennis, Beginning"
+    },
+    {
+      "department_code": "A&P",
+      "course_number": "151",
+      "title": "Intro To Human Physiology",
+      "units": "4.000",
+      "department": "",
+      "description": "Intro To Human Physiology",
+      "enhanced_description": "Intro To Human Physiology"
+    },
+    {
+      "department_code": "CHIN",
+      "course_number": "260",
+      "title": "Chinese Culture & Society",
+      "units": "3.000",
+      "department": "",
+      "description": "Chinese Culture & Society",
+      "enhanced_description": "Chinese Culture & Society"
+    },
+    {
+      "department_code": "GEOG",
+      "course_number": "103",
+      "title": "Environmental Geography",
+      "units": "3.000",
+      "department": "",
+      "description": "Environmental Geography",
+      "enhanced_description": "Environmental Geography"
+    },
+    {
+      "department_code": "PEX",
+      "course_number": "178",
+      "title": "Soccer, Beginning",
+      "units": "1.000",
+      "department": "",
+      "description": "Soccer, Beginning",
+      "enhanced_description": "Soccer, Beginning"
+    },
+    {
+      "department_code": "PEX",
+      "course_number": "185",
+      "title": "Swimming, Beginning",
+      "units": "1.000",
+      "department": "",
+      "description": "Swimming, Beginning",
+      "enhanced_description": "Swimming, Beginning"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "251",
+      "title": "Developmental Psychology",
+      "units": "3.000",
+      "department": "",
+      "description": "Developmental Psychology",
+      "enhanced_description": "Developmental Psychology"
+    },
+    {
+      "department_code": "INST",
+      "course_number": "151",
+      "title": "Recovery and Rehabilitation",
+      "units": "3.000",
+      "department": "",
+      "description": "Recovery and Rehabilitation",
+      "enhanced_description": "Recovery and Rehabilitation"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "101",
+      "title": "General Introductory Psyc",
+      "units": "0.000",
+      "department": "",
+      "description": "General Introductory Psyc",
+      "enhanced_description": "General Introductory Psyc"
+    },
+    {
+      "department_code": "INST",
+      "course_number": "152",
+      "title": "Helping Relationships",
+      "units": "3.000",
+      "department": "",
+      "description": "Helping Relationships",
+      "enhanced_description": "Helping Relationships"
+    },
+    {
+      "department_code": "INST",
+      "course_number": "272",
+      "title": "Special Populations",
+      "units": "3.000",
+      "department": "",
+      "description": "Special Populations",
+      "enhanced_description": "Special Populations"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "101",
+      "title": "General Introductory Psyc",
+      "units": "3.000",
+      "department": "",
+      "description": "General Introductory Psyc",
+      "enhanced_description": "General Introductory Psyc"
+    },
+    {
+      "department_code": "A&P",
+      "course_number": "151",
+      "title": "Intro To Human Physiology",
+      "units": "4.000",
+      "department": "",
+      "description": "Intro To Human Physiology",
+      "enhanced_description": "Intro To Human Physiology"
+    },
+    {
+      "department_code": "ASL",
+      "course_number": "110",
+      "title": "American Sign Language I",
+      "units": "4.000",
+      "department": "",
+      "description": "American Sign Language I",
+      "enhanced_description": "American Sign Language I"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "271",
+      "title": "Abnormal Psychology",
+      "units": "3.000",
+      "department": "",
+      "description": "Abnormal Psychology",
+      "enhanced_description": "Abnormal Psychology"
+    }
+  ]
+}

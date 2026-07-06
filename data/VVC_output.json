@@ -1,0 +1,360 @@
+{
+  "catalog_info": {
+    "academic_year": "2022-2026",
+    "institution": "Victor Valley College"
+  },
+  "total_courses": 39,
+  "courses": [
+    {
+      "department_code": "ENGL",
+      "course_number": "45",
+      "title": "Writing Fundamentals",
+      "units": "4.00",
+      "department": "",
+      "description": "Writing Fundamentals",
+      "enhanced_description": "Writing Fundamentals"
+    },
+    {
+      "department_code": "SOC",
+      "course_number": "101",
+      "title": "Intro to Sociology",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro to Sociology",
+      "enhanced_description": "Intro to Sociology"
+    },
+    {
+      "department_code": "GUID",
+      "course_number": "50",
+      "title": "College Success",
+      "units": "1.00",
+      "department": "",
+      "description": "College Success",
+      "enhanced_description": "College Success"
+    },
+    {
+      "department_code": "PHIL",
+      "course_number": "101",
+      "title": "Introduction to Philosophy",
+      "units": "3.00",
+      "department": "",
+      "description": "Introduction to Philosophy",
+      "enhanced_description": "Introduction to Philosophy"
+    },
+    {
+      "department_code": "HIST",
+      "course_number": "118",
+      "title": "History of U.S From 1876",
+      "units": "3.00",
+      "department": "",
+      "description": "History of U.S From 1876",
+      "enhanced_description": "History of U.S From 1876"
+    },
+    {
+      "department_code": "CMST",
+      "course_number": "109",
+      "title": "Public Speaking",
+      "units": "3.00",
+      "department": "",
+      "description": "Public Speaking",
+      "enhanced_description": "Public Speaking"
+    },
+    {
+      "department_code": "ENGL",
+      "course_number": "101.0",
+      "title": "Engl Composition and Reading",
+      "units": "4.00",
+      "department": "",
+      "description": "Engl Composition and Reading",
+      "enhanced_description": "Engl Composition and Reading"
+    },
+    {
+      "department_code": "GUID",
+      "course_number": "51",
+      "title": "Orientation to College",
+      "units": "0.50",
+      "department": "",
+      "description": "Orientation to College",
+      "enhanced_description": "Orientation to College"
+    },
+    {
+      "department_code": "BADM",
+      "course_number": "100",
+      "title": "Intro Business Organizations",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro Business Organizations",
+      "enhanced_description": "Intro Business Organizations"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "101",
+      "title": "Introductory Psych",
+      "units": "3.00",
+      "department": "",
+      "description": "Introductory Psych",
+      "enhanced_description": "Introductory Psych"
+    },
+    {
+      "department_code": "CHDV",
+      "course_number": "100",
+      "title": "Child Growth & Development",
+      "units": "3.00",
+      "department": "",
+      "description": "Child Growth & Development",
+      "enhanced_description": "Child Growth & Development"
+    },
+    {
+      "department_code": "ENGL",
+      "course_number": "104",
+      "title": "Critical Think & Composition",
+      "units": "3.00",
+      "department": "",
+      "description": "Critical Think & Composition",
+      "enhanced_description": "Critical Think & Composition"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "110",
+      "title": "Developmental Psych",
+      "units": "3.00",
+      "department": "",
+      "description": "Developmental Psych",
+      "enhanced_description": "Developmental Psych"
+    },
+    {
+      "department_code": "GUID",
+      "course_number": "101",
+      "title": "First Year Experience",
+      "units": "3.00",
+      "department": "",
+      "description": "First Year Experience",
+      "enhanced_description": "First Year Experience"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "105",
+      "title": "College Algebra",
+      "units": "4.00",
+      "department": "",
+      "description": "College Algebra",
+      "enhanced_description": "College Algebra"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "104",
+      "title": "Trigonometry",
+      "units": "4.00",
+      "department": "",
+      "description": "Trigonometry",
+      "enhanced_description": "Trigonometry"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "215",
+      "title": "Intro to Stat in Soc & Behav",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro to Stat in Soc & Behav",
+      "enhanced_description": "Intro to Stat in Soc & Behav"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "109",
+      "title": "Biopsychology",
+      "units": "3.00",
+      "department": "",
+      "description": "Biopsychology",
+      "enhanced_description": "Biopsychology"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "226",
+      "title": "Analytic Geometry/Calculus I",
+      "units": "4.00",
+      "department": "",
+      "description": "Analytic Geometry/Calculus I",
+      "enhanced_description": "Analytic Geometry/Calculus I"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "86",
+      "title": "Coreq Sup Analytic Geom Calc",
+      "units": "2.00",
+      "department": "",
+      "description": "Coreq Sup Analytic Geom Calc",
+      "enhanced_description": "Coreq Sup Analytic Geom Calc"
+    },
+    {
+      "department_code": "BIOL",
+      "course_number": "100",
+      "title": "General Biology",
+      "units": "4.00",
+      "department": "",
+      "description": "General Biology",
+      "enhanced_description": "General Biology"
+    },
+    {
+      "department_code": "GUID",
+      "course_number": "105",
+      "title": "Personal & Career Success",
+      "units": "3.00",
+      "department": "",
+      "description": "Personal & Career Success",
+      "enhanced_description": "Personal & Career Success"
+    },
+    {
+      "department_code": "ART",
+      "course_number": "106",
+      "title": "Art Concepts",
+      "units": "3.00",
+      "department": "",
+      "description": "Art Concepts",
+      "enhanced_description": "Art Concepts"
+    },
+    {
+      "department_code": "ATHL",
+      "course_number": "130P",
+      "title": "Prep for Volleyball",
+      "units": "1.00",
+      "department": "",
+      "description": "Prep for Volleyball",
+      "enhanced_description": "Prep for Volleyball"
+    },
+    {
+      "department_code": "ATHL",
+      "course_number": "143",
+      "title": "Sports Performance Training",
+      "units": "1.00",
+      "department": "",
+      "description": "Sports Performance Training",
+      "enhanced_description": "Sports Performance Training"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "213",
+      "title": "Abnormal Psychology",
+      "units": "3.00",
+      "department": "",
+      "description": "Abnormal Psychology",
+      "enhanced_description": "Abnormal Psychology"
+    },
+    {
+      "department_code": "PHYS",
+      "course_number": "201",
+      "title": "Engineering Physics I-Mech",
+      "units": "4.00",
+      "department": "",
+      "description": "Engineering Physics I-Mech",
+      "enhanced_description": "Engineering Physics I-Mech"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "87",
+      "title": "Coreq Sup Anlytic Geom Calc II",
+      "units": "2.00",
+      "department": "",
+      "description": "Coreq Sup Anlytic Geom Calc II",
+      "enhanced_description": "Coreq Sup Anlytic Geom Calc II"
+    },
+    {
+      "department_code": "MATH",
+      "course_number": "227",
+      "title": "Analytic Geometry and Calculus",
+      "units": "4.00",
+      "department": "",
+      "description": "Analytic Geometry and Calculus",
+      "enhanced_description": "Analytic Geometry and Calculus"
+    },
+    {
+      "department_code": "CIS",
+      "course_number": "201",
+      "title": "Programming I",
+      "units": "4.00",
+      "department": "",
+      "description": "Programming I",
+      "enhanced_description": "Programming I"
+    },
+    {
+      "department_code": "ATHL",
+      "course_number": "130",
+      "title": "Varsity Volleyball Women",
+      "units": "3.00",
+      "department": "",
+      "description": "Varsity Volleyball Women",
+      "enhanced_description": "Varsity Volleyball Women"
+    },
+    {
+      "department_code": "HLTH",
+      "course_number": "102",
+      "title": "Pers/Comm Hlth Probs",
+      "units": "3.00",
+      "department": "",
+      "description": "Pers/Comm Hlth Probs",
+      "enhanced_description": "Pers/Comm Hlth Probs"
+    },
+    {
+      "department_code": "ATHL",
+      "course_number": "144P",
+      "title": "Prep for I.A. Sand Volleyball",
+      "units": "1.00",
+      "department": "",
+      "description": "Prep for I.A. Sand Volleyball",
+      "enhanced_description": "Prep for I.A. Sand Volleyball"
+    },
+    {
+      "department_code": "PSYC",
+      "course_number": "217",
+      "title": "Intro Research Methods in Psyc",
+      "units": "4.00",
+      "department": "",
+      "description": "Intro Research Methods in Psyc",
+      "enhanced_description": "Intro Research Methods in Psyc"
+    },
+    {
+      "department_code": "ATHL",
+      "course_number": "144",
+      "title": "Varsity Sand Volleyball Women",
+      "units": "3.00",
+      "department": "",
+      "description": "Varsity Sand Volleyball Women",
+      "enhanced_description": "Varsity Sand Volleyball Women"
+    },
+    {
+      "department_code": "SOC",
+      "course_number": "103",
+      "title": "Intro to Marriage & Family",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro to Marriage & Family",
+      "enhanced_description": "Intro to Marriage & Family"
+    },
+    {
+      "department_code": "SOC",
+      "course_number": "107",
+      "title": "Intro to Race & Ethnicity",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro to Race & Ethnicity",
+      "enhanced_description": "Intro to Race & Ethnicity"
+    },
+    {
+      "department_code": "POLS",
+      "course_number": "102",
+      "title": "Intro American Govt/Politics",
+      "units": "3.00",
+      "department": "",
+      "description": "Intro American Govt/Politics",
+      "enhanced_description": "Intro American Govt/Politics"
+    },
+    {
+      "department_code": "CHDV",
+      "course_number": "106",
+      "title": "Child, Family, and Community",
+      "units": "3.00",
+      "department": "",
+      "description": "Child, Family, and Community",
+      "enhanced_description": "Child, Family, and Community"
+    }
+  ]
+}

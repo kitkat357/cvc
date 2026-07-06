@@ -1,11 +1,13 @@
 # Python
-.venv/
-venv/
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+env/
+venv/
+.venv/
+ENV/
 build/
 develop-eggs/
 dist/
@@ -25,15 +27,7 @@ wheels/
 # Environment variables
 .env
 .env.local
-
-# AWS
-.aws/
-
-# Data files (mock data should not be committed)
-data/
-*.json
-*.csv
-*.pdf
+.env.*.local
 
 # IDE
 .vscode/
@@ -41,18 +35,33 @@ data/
 *.swp
 *.swo
 *~
-
-# Streamlit
-.streamlit/
-
-# OS
 .DS_Store
-Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Frontend build
+frontend/dist/
+frontend/build/
+frontend/.vite/
 
 # Logs
 *.log
+logs/
+/tmp/
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
+# AWS
+*.pem
+*.key
+
+# Test files
+test_chat.html
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

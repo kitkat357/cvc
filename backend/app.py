@@ -65,66 +65,67 @@ GE_INFO = {
 
 # Mock course data (simplified for demo)
 MOCK_COURSES = [
+    # Cuesta College courses
     {
         "course_code": "ENGL 101",
         "title": "English Composition",
-        "college": "Cerritos College",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 1A", "Cal-GETC 1A"],
         "description": "Introduction to college-level writing and critical reading."
     },
     {
-        "course_code": "COMM 100",
+        "course_code": "COMM 101",
         "title": "Public Speaking",
-        "college": "Victor Valley College",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 1C", "Cal-GETC 1C"],
         "description": "Fundamentals of public speaking and oral communication."
     },
     {
-        "course_code": "MATH 104",
+        "course_code": "MATH 141",
         "title": "Calculus I",
-        "college": "Victor Valley College",
+        "college": "Cuesta College",
         "units": "5",
         "ge_areas": ["IGETC 2", "Cal-GETC 2"],
-        "description": "Introduction to differential and integral calculus."
+        "description": "Limits, derivatives, and introduction to integration."
     },
     {
-        "course_code": "ART 101",
-        "title": "Art History",
-        "college": "Mount San Antonio College",
+        "course_code": "ART 111",
+        "title": "Art History: Prehistoric to Gothic",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 3A", "Cal-GETC 3"],
-        "description": "Survey of Western art from prehistoric to modern times."
+        "description": "Survey of art history from prehistoric times through the Gothic period."
     },
     {
-        "course_code": "MUS 104B",
-        "title": "History of Rock Music",
-        "college": "Cerritos College",
+        "course_code": "MUS 101",
+        "title": "Music Appreciation",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 3A", "Cal-GETC 3"],
-        "description": "Historical and cultural study of rock music."
+        "description": "Introduction to the fundamentals of music and various musical styles."
     },
     {
         "course_code": "SOC 101",
-        "title": "Intro to Sociology",
-        "college": "Cerritos College",
+        "title": "Introduction to Sociology",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 4", "Cal-GETC 4"],
         "description": "Introduction to sociological principles and concepts."
     },
     {
-        "course_code": "PSYCH 101",
+        "course_code": "PSYCH 201",
         "title": "General Psychology",
-        "college": "Victor Valley College",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["IGETC 4", "Cal-GETC 4"],
-        "description": "Introduction to the science of human behavior."
+        "description": "Introduction to the science of human behavior and mental processes."
     },
     {
         "course_code": "BIO 101",
         "title": "General Biology",
-        "college": "Cerritos College",
+        "college": "Cuesta College",
         "units": "4",
         "ge_areas": ["IGETC 5B", "Cal-GETC 5"],
         "description": "Introduction to biological principles with lab component."
@@ -132,15 +133,15 @@ MOCK_COURSES = [
     {
         "course_code": "CHEM 101",
         "title": "General Chemistry",
-        "college": "Mount San Antonio College",
+        "college": "Cuesta College",
         "units": "5",
         "ge_areas": ["IGETC 5A", "Cal-GETC 5"],
-        "description": "Introduction to chemical principles with lab."
+        "description": "Introduction to chemical principles with laboratory."
     },
     {
         "course_code": "ES 101",
         "title": "Introduction to Ethnic Studies",
-        "college": "Victor Valley College",
+        "college": "Cuesta College",
         "units": "3",
         "ge_areas": ["Cal-GETC 6"],
         "description": "Interdisciplinary study of race, ethnicity, and culture in America."
@@ -164,12 +165,41 @@ class ChatResponse(BaseModel):
     suggestions: Optional[List[str]] = None
     courses: Optional[List[Dict]] = None
     enrollable_course_codes: Optional[List[str]] = None
+    sources: Optional[List[Dict]] = None
+
+
+def generate_mock_sources(courses: List[Dict]) -> List[Dict]:
+    """Generate mock sources for demo purposes."""
+    sources = []
+    for course in courses:
+        sources.append({
+            "text": f"{course['course_code']} - {course['title']}. {course['description']} Units: {course['units']}. GE Areas: {', '.join(course['ge_areas'])}.",
+            "score": 0.85 + (len(sources) * 0.03),  # Decreasing relevance scores
+            "metadata": {
+                "college": course["college"],
+                "course_code": course["course_code"],
+                "title": course["title"],
+                "source_type": "catalog"
+            }
+        })
+    return sources
 
 
 def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
     """Generate bot response based on conversation history and context."""
 
     user_message = messages[-1].content.lower() if messages else ""
+
+    # Detect if user mentions a specific college
+    college_filter = None
+    if "cuesta" in user_message:
+        college_filter = "Cuesta College"
+    elif "cerritos" in user_message:
+        college_filter = "Cerritos College"
+    elif "victor valley" in user_message or "vvc" in user_message:
+        college_filter = "Victor Valley College"
+    elif "mount san antonio" in user_message or "mt sac" in user_message or "mtsac" in user_message:
+        college_filter = "Mount San Antonio College"
 
     # Check if user is asking about GE systems
     if any(term in user_message for term in ["what is", "explain", "tell me about"]):
@@ -221,50 +251,73 @@ def get_bot_response(messages: List[Message], context: Dict) -> ChatResponse:
             if any(ge_area_match in ge for ge in course["ge_areas"])
         ]
 
+        # Filter by college if specified
+        if college_filter:
+            matching_courses = [c for c in matching_courses if c["college"] == college_filter]
+
         if matching_courses:
-            response = f"Great! Here are some courses that satisfy **Area {ge_area_match}**:\n\n"
+            college_text = f" at **{college_filter}**" if college_filter else ""
+            response = f"Great! Here are some courses{college_text} that satisfy **Area {ge_area_match}**:\n\n"
 
             return ChatResponse(
                 response=response,
                 courses=matching_courses,
+                sources=generate_mock_sources(matching_courses),
                 suggestions=["I want to enroll in one of these", "I need a different area", "Show me all areas"]
             )
         else:
+            college_text = f" at {college_filter}" if college_filter else ""
             return ChatResponse(
-                response=f"I don't have specific courses for Area {ge_area_match} in my current database. Would you like to explore other areas?",
+                response=f"I don't have specific courses for Area {ge_area_match}{college_text} in my current database. Would you like to explore other areas?",
                 suggestions=["Show me Area 1A", "What about Area 4?", "See all available areas"]
             )
 
     # Check for specific subjects
     if any(term in user_message for term in ["math", "calculus", "mathematics"]):
         math_courses = [c for c in MOCK_COURSES if "MATH" in c["course_code"]]
+        if college_filter:
+            math_courses = [c for c in math_courses if c["college"] == college_filter]
+        college_text = f" at {college_filter}" if college_filter else ""
         return ChatResponse(
-            response="Here are the math courses I found:",
+            response=f"Here are the math courses{college_text} I found:",
             courses=math_courses,
-            suggestions=["I want to enroll in MATH 104", "Show me other areas", "I need science courses"]
+            sources=generate_mock_sources(math_courses),
+            suggestions=["I want to enroll", "Show me other areas", "I need science courses"]
         )
 
     if any(term in user_message for term in ["english", "writing", "composition"]):
         english_courses = [c for c in MOCK_COURSES if "ENGL" in c["course_code"]]
+        if college_filter:
+            english_courses = [c for c in english_courses if c["college"] == college_filter]
+        college_text = f" at {college_filter}" if college_filter else ""
         return ChatResponse(
-            response="Here are the English courses I found:",
+            response=f"Here are the English courses{college_text} I found:",
             courses=english_courses,
-            suggestions=["I want to enroll in ENGL 101", "Show me communication courses", "I need humanities"]
+            sources=generate_mock_sources(english_courses),
+            suggestions=["I want to enroll", "Show me communication courses", "I need humanities"]
         )
 
     if any(term in user_message for term in ["social", "sociology", "psychology"]):
         social_courses = [c for c in MOCK_COURSES if any(code in c["course_code"] for code in ["SOC", "PSYCH"])]
+        if college_filter:
+            social_courses = [c for c in social_courses if c["college"] == college_filter]
+        college_text = f" at {college_filter}" if college_filter else ""
         return ChatResponse(
-            response="Here are social science courses I found:",
+            response=f"Here are social science courses{college_text} I found:",
             courses=social_courses,
+            sources=generate_mock_sources(social_courses),
             suggestions=["I want to enroll", "Show me arts courses", "I need science courses"]
         )
 
     if any(term in user_message for term in ["science", "biology", "chemistry", "lab"]):
         science_courses = [c for c in MOCK_COURSES if any(code in c["course_code"] for code in ["BIO", "CHEM"])]
+        if college_filter:
+            science_courses = [c for c in science_courses if c["college"] == college_filter]
+        college_text = f" at {college_filter}" if college_filter else ""
         return ChatResponse(
-            response="Here are science courses with lab components:",
+            response=f"Here are science courses{college_text} with lab components:",
             courses=science_courses,
+            sources=generate_mock_sources(science_courses),
             suggestions=["I want to enroll", "Show me humanities", "I need math courses"]
         )
 
